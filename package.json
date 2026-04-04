@@ -1,0 +1,9 @@
+{
+  "name": "wavez-tools",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node --check dist/wavez-tools.js"
+  }
+}
