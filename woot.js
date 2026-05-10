@@ -193,6 +193,20 @@
         box-shadow: 0 0 0 1px rgba(0,0,0,.5), 0 0 28px color-mix(in srgb, var(--theme-accent, #42a5dc) 28%, transparent);
       }
 
+      #${APP_ID}-button[data-docked="true"] {
+        position: static;
+        width: 2rem;
+        height: 2rem;
+        flex: 0 0 auto;
+        border-radius: 0.5rem;
+        box-shadow: none;
+        backdrop-filter: none;
+      }
+
+      #${APP_ID}-button[data-docked="true"]:hover {
+        transform: none;
+      }
+
       #${APP_ID}-panel {
         position: fixed;
         top: 72px;
@@ -410,7 +424,44 @@
     button.setAttribute("data-open", String(state.panelOpen));
 
     document.body.append(button, panel);
+    dockButton();
+    watchToolbar();
     render();
+  }
+
+  function findToolbarAnchor() {
+    const buttons = Array.from(document.querySelectorAll("button[aria-label]"));
+    return buttons.find((button) => {
+      const label = (button.getAttribute("aria-label") || "").toLowerCase();
+      return label.includes("favorito");
+    });
+  }
+
+  function dockButton() {
+    const button = document.getElementById(`${APP_ID}-button`);
+    if (!button) return;
+
+    const anchor = findToolbarAnchor();
+    const toolbar = anchor?.parentElement;
+
+    if (anchor && toolbar) {
+      if (button.previousElementSibling !== anchor) {
+        anchor.insertAdjacentElement("afterend", button);
+      }
+      button.setAttribute("data-docked", "true");
+      return;
+    }
+
+    if (button.parentElement !== document.body) {
+      document.body.appendChild(button);
+    }
+    button.setAttribute("data-docked", "false");
+  }
+
+  function watchToolbar() {
+    const observer = new MutationObserver(() => dockButton());
+    observer.observe(document.body, { childList: true, subtree: true });
+    window.__WootJSToolbarObserver = observer;
   }
 
   function togglePanel() {
@@ -540,6 +591,7 @@
     togglePanel,
     destroy() {
       cleanupSubscriptions();
+      window.__WootJSToolbarObserver?.disconnect?.();
       document.getElementById(`${APP_ID}-button`)?.remove();
       document.getElementById(`${APP_ID}-panel`)?.remove();
       document.getElementById(`${APP_ID}-style`)?.remove();
