@@ -17,7 +17,7 @@
   };
 
   const state = {
-    panelOpen: true,
+    panelOpen: false,
     lastPlaybackKey: null,
     status: "Inicializando",
     settings: loadSettings(),
@@ -164,50 +164,59 @@
 
       #${APP_ID}-button {
         position: fixed;
-        top: 86px;
-        left: 18px;
+        top: 82px;
+        left: 13px;
         z-index: 2147483646;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 44px;
-        height: 44px;
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        border-radius: 14px;
-        color: #f8fafc;
-        background: rgba(10, 10, 12, 0.82);
-        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.34);
-        backdrop-filter: blur(18px);
+        width: 38px;
+        height: 38px;
+        border: 1px solid color-mix(in srgb, var(--theme-accent, #42a5dc) 58%, rgba(255,255,255,.14));
+        border-radius: 12px;
+        color: var(--theme-text-primary, #f4f6f8);
+        background: color-mix(in srgb, var(--theme-bg-elevated, #151515) 88%, transparent);
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45), 0 12px 32px rgba(0, 0, 0, 0.42);
+        backdrop-filter: blur(14px);
         cursor: pointer;
         transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
       }
 
       #${APP_ID}-button:hover {
         transform: translateY(-1px);
-        border-color: rgba(255, 255, 255, 0.28);
-        background: rgba(18, 18, 22, 0.92);
+        border-color: var(--theme-accent, #42a5dc);
+        background: var(--theme-bg-hover, #1b1b1b);
+      }
+
+      #${APP_ID}-button[data-open="true"] {
+        border-color: var(--theme-accent, #42a5dc);
+        box-shadow: 0 0 0 1px rgba(0,0,0,.5), 0 0 28px color-mix(in srgb, var(--theme-accent, #42a5dc) 28%, transparent);
       }
 
       #${APP_ID}-panel {
         position: fixed;
-        top: 74px;
-        left: 72px;
+        top: 72px;
+        left: 64px;
         z-index: 2147483646;
-        width: min(340px, calc(100vw - 96px));
+        width: 348px;
         max-height: calc(100vh - 96px);
         overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 20px;
-        color: #f8fafc;
+        border: 1px solid var(--theme-border, #262626);
+        border-radius: 16px;
+        color: var(--theme-text-primary, #f4f6f8);
         background:
-          radial-gradient(circle at top left, rgba(255, 255, 255, 0.12), transparent 36%),
-          rgba(9, 9, 11, 0.9);
-        box-shadow: 0 24px 90px rgba(0, 0, 0, 0.48);
-        backdrop-filter: blur(24px);
+          radial-gradient(circle at top left, color-mix(in srgb, var(--theme-accent, #42a5dc) 12%, transparent), transparent 38%),
+          color-mix(in srgb, var(--theme-bg-secondary, #0f0f0f) 94%, transparent);
+        box-shadow: 18px 0 60px rgba(0, 0, 0, 0.46);
+        backdrop-filter: blur(20px);
+        transform: translateX(0);
+        transition: opacity 180ms ease, transform 180ms ease;
       }
 
       #${APP_ID}-panel[data-open="false"] {
-        display: none;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateX(-10px);
       }
 
       .woot-panel-head {
@@ -216,7 +225,7 @@
         justify-content: space-between;
         gap: 12px;
         padding: 16px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+        border-bottom: 1px solid var(--theme-border-light, #1e1e1e);
       }
 
       .woot-brand {
@@ -234,18 +243,18 @@
 
       .woot-subtitle {
         margin: 0;
-        color: rgba(248, 250, 252, 0.58);
+        color: var(--theme-text-muted, #8b92a0);
         font-size: 12px;
       }
 
       .woot-chip {
         display: inline-flex;
         align-items: center;
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        border: 1px solid color-mix(in srgb, var(--theme-accent, #42a5dc) 22%, var(--theme-border, #262626));
         border-radius: 999px;
         padding: 4px 8px;
-        color: rgba(248, 250, 252, 0.7);
-        background: rgba(255, 255, 255, 0.06);
+        color: var(--theme-text-secondary, #c2c8d1);
+        background: var(--theme-accent-soft, rgba(66, 165, 220, .15));
         font-size: 11px;
         font-weight: 700;
       }
@@ -258,9 +267,9 @@
       }
 
       .woot-card {
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 16px;
-        background: rgba(255, 255, 255, 0.055);
+        border: 1px solid var(--theme-border, #262626);
+        border-radius: 12px;
+        background: color-mix(in srgb, var(--theme-bg-tertiary, #151515) 86%, transparent);
         padding: 12px;
       }
 
@@ -284,7 +293,7 @@
 
       .woot-label span,
       .woot-meta {
-        color: rgba(248, 250, 252, 0.55);
+        color: var(--theme-text-muted, #8b92a0);
         font-size: 11px;
       }
 
@@ -295,7 +304,7 @@
         height: 24px;
         border: 0;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.14);
+        background: var(--theme-bg-active, #242424);
         cursor: pointer;
         transition: background 160ms ease;
       }
@@ -307,19 +316,19 @@
         width: 18px;
         height: 18px;
         border-radius: 999px;
-        background: #fff;
+        background: var(--theme-text-primary, #f4f6f8);
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.32);
         content: "";
         transition: transform 160ms ease;
       }
 
       .woot-switch[data-on="true"] {
-        background: #f8fafc;
+        background: var(--theme-accent, #42a5dc);
       }
 
       .woot-switch[data-on="true"]::after {
         transform: translateX(18px);
-        background: #050507;
+        background: white;
       }
 
       .woot-actions {
@@ -329,10 +338,10 @@
       }
 
       .woot-action {
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 12px;
-        color: #f8fafc;
-        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid var(--theme-field-border, #2a2a2a);
+        border-radius: 10px;
+        color: var(--theme-text-primary, #f4f6f8);
+        background: var(--theme-button-neutral-bg, #141414);
         padding: 10px;
         font-size: 12px;
         font-weight: 800;
@@ -342,12 +351,12 @@
 
       .woot-action:hover {
         transform: translateY(-1px);
-        background: rgba(255, 255, 255, 0.12);
+        background: var(--theme-button-neutral-hover, #1e1e1e);
       }
 
       .woot-range {
         width: 100%;
-        accent-color: #f8fafc;
+        accent-color: var(--theme-accent, #42a5dc);
       }
 
       .woot-status {
@@ -356,14 +365,14 @@
         justify-content: space-between;
         gap: 8px;
         padding: 10px 12px;
-        border-top: 1px solid rgba(255, 255, 255, 0.09);
-        color: rgba(248, 250, 252, 0.58);
+        border-top: 1px solid var(--theme-border-light, #1e1e1e);
+        color: var(--theme-text-muted, #8b92a0);
         font-size: 11px;
       }
 
       .woot-track {
         overflow: hidden;
-        color: rgba(248, 250, 252, 0.82);
+        color: var(--theme-text-secondary, #c2c8d1);
         font-size: 12px;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -376,7 +385,7 @@
         }
 
         #${APP_ID}-panel {
-          top: 132px;
+          top: 124px;
           left: 12px;
           width: calc(100vw - 24px);
         }
@@ -392,12 +401,13 @@
     button.id = `${APP_ID}-button`;
     button.type = "button";
     button.title = "Abrir Woot.js";
-    button.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 16.5 10.5 7l3 10 3-10L20 16.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    button.innerHTML = `<svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.5 15.8 8.8 8l3.1 8.2L15.2 8l3.3 7.8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.5 18.5h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".55"/></svg>`;
     button.addEventListener("click", togglePanel);
 
     const panel = document.createElement("aside");
     panel.id = `${APP_ID}-panel`;
-    panel.setAttribute("data-open", "true");
+    panel.setAttribute("data-open", String(state.panelOpen));
+    button.setAttribute("data-open", String(state.panelOpen));
 
     document.body.append(button, panel);
     render();
@@ -406,7 +416,9 @@
   function togglePanel() {
     state.panelOpen = !state.panelOpen;
     const panel = document.getElementById(`${APP_ID}-panel`);
+    const button = document.getElementById(`${APP_ID}-button`);
     panel?.setAttribute("data-open", String(state.panelOpen));
+    button?.setAttribute("data-open", String(state.panelOpen));
   }
 
   function setSetting(key, value) {
